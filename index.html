@@ -5,14 +5,8 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>2025 年度规划卡片</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 引入必要的工具库 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <!-- Google Material Icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <script>
         tailwind.config = {
@@ -291,95 +285,5 @@
 
         </div>
     </div>
-
-    <!-- 悬浮下载按钮 -->
-    <button id="download-btn" onclick="downloadAllCards()" class="fixed bottom-8 right-8 z-50 bg-claude-accent hover:bg-claude-accentHover text-black hover:text-white p-4 rounded-full shadow-2xl transition-all duration-300 flex items-center gap-2 group hover:scale-105 border border-white/10">
-        <span class="material-icons" id="btn-icon">download</span>
-        <span class="font-bold pr-2" id="btn-text">下载所有卡片</span>
-    </button>
-
-    <script>
-        async function downloadAllCards() {
-            const btn = document.getElementById('download-btn');
-            const icon = document.getElementById('btn-icon');
-            const text = document.getElementById('btn-text');
-
-            // 状态更新：加载中
-            const originalIconText = icon.innerText;
-            const originalTextText = text.innerText;
-
-            icon.innerText = 'sync';
-            icon.classList.add('animate-spin-slow');
-            text.innerText = '正在生成...';
-            btn.classList.add('opacity-75', 'cursor-not-allowed');
-            btn.disabled = true;
-
-            try {
-                const zip = new JSZip();
-                const cards = document.querySelectorAll('.month-card');
-
-                // 并行生成图片
-                const promises = Array.from(cards).map(async (card, index) => {
-                    const monthName = card.querySelector('h3').innerText.trim();
-                    const monthNum = (index + 1).toString().padStart(2, '0');
-
-                    // 使用 html2canvas 截图
-                    const canvas = await html2canvas(card, {
-                        scale: 3, // 提高导出清晰度
-                        backgroundColor: '#000000', // 修正：使用纯黑背景，避免半透明叠加后发灰
-                        useCORS: true,
-                        logging: false,
-                        onclone: (clonedDoc) => {
-                            // 在截图的一瞬间，对克隆的节点进行样式修正
-                            const clonedCard = clonedDoc.querySelector(`[data-html2canvas-ignore="true"]`) || clonedDoc.body.querySelector('.month-card');
-
-                            // 这里我们通过 class 查找克隆出来的卡片
-                            // 注意：html2canvas clone 的是整个 body 或目标节点，我们需要找到对应的那个
-                            // 由于我们是直接传入 card 节点，clonedDoc 的 body 下直接就是这个 card
-
-                            if (clonedDoc.body.firstChild) {
-                                const target = clonedDoc.body.firstChild;
-                                // 1. 移除 transform，防止悬停偏移被截图
-                                target.style.transform = 'none';
-                                target.style.boxShadow = 'none';
-
-                                // 2. 关键修正：移除透明度，确保文字和边框清晰锐利
-                                target.style.opacity = '1';
-                                target.classList.remove('opacity-80', 'opacity-60');
-
-                                // 3. 针对 1 月份这种半透明背景卡片，稍微加深背景色，保证在纯黑底上依然有层次
-                                // 检测原本是否有 bg-opacity
-                                if (target.className.includes('bg-[#1c1c1f]/50')) {
-                                    target.classList.remove('bg-[#1c1c1f]/50');
-                                    target.style.backgroundColor = '#1c1c1f'; // 改为实色，防止透出底色太亮
-                                }
-                            }
-                        }
-                    });
-
-                    // 转换 Blob
-                    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-                    zip.file(`2025_${monthNum}_${monthName}.png`, blob);
-                });
-
-                await Promise.all(promises);
-
-                // 生成 ZIP 并下载
-                const content = await zip.generateAsync({type:"blob"});
-                saveAs(content, "Claude_2025_Roadmap_Cards.zip");
-
-            } catch (err) {
-                console.error("下载失败:", err);
-                alert("生成图片时出错，请重试。");
-            } finally {
-                // 恢复按钮状态
-                icon.innerText = originalIconText;
-                icon.classList.remove('animate-spin-slow');
-                text.innerText = originalTextText;
-                btn.classList.remove('opacity-75', 'cursor-not-allowed');
-                btn.disabled = false;
-            }
-        }
-    </script>
 </body>
 </html>
