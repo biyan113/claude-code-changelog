@@ -14,16 +14,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install Claude Code CLI
+        run: npm install -g @anthropic-ai/claude-code
+
       - name: Fetch upstream CHANGELOG
         run: |
           curl -sL https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md -o CHANGELOG.md
 
-      - name: Translate with Anthropic API
+      - name: Translate with Claude Code (headless mode)
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
+          ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
         run: |
-          npm install
-          node .github/workflows/translate.js
+          claude -p "将 CHANGELOG.md 文件内容翻译成中文，保持 Markdown 格式，保存为 CHANGELOG_CN.md" \
+            --dangerously-skip-permissions \
+            --allowed-tools "Read,Write"
 
       - name: Commit and push
         run: |
