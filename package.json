@@ -4,6 +4,7 @@
   "description": "Claude Code CHANGELOG 中文镜像服务",
   "main": "index.js",
   "scripts": {
+    "export:cards": "node scripts/export-cards.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -14,6 +15,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.32.1"
+    "@anthropic-ai/sdk": "^0.32.1",
+    "puppeteer": "^23.11.1"
   }
 }
