@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>2025 年度规划卡片</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入必要的工具库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Inter"', '"Noto Sans SC"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        claude: {
+                            accent: '#D97757', // 陶土色
+                            accentHover: '#c5684a',
+                            bg: '#09090b',      // Zinc 950
+                            card: '#27272a',    // Zinc 800
+                            border: '#3f3f46',  // Zinc 700
+                            text: '#f4f4f5',    // Zinc 100
+                            dim: '#a1a1aa',     // Zinc 400
+                            muted: '#71717a'    // Zinc 500
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
+                        'spin-slow': 'spin 3s linear infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #000000;
+            background-image: radial-gradient(circle at 50% 0%, #2a1b18 0%, #000000 60%);
+            color: #f4f4f5;
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+        }
+
+        /* 卡片悬停效果 */
+        .month-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .month-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px -10px rgba(217, 119, 87, 0.15);
+            border-color: rgba(217, 119, 87, 0.5);
+        }
+
+        /* 列表项的小圆点 */
+        .feature-item {
+            position: relative;
+            padding-left: 1rem;
+        }
+        .feature-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.6rem;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background-color: #52525b; /* Zinc 600 */
+            transition: background-color 0.3s;
+        }
+        .month-card:hover .feature-item::before {
+            background-color: #D97757;
+        }
+
+        /* 季度背景大字 */
+        .quarter-mark {
+            position: absolute;
+            right: -0.5rem;
+            top: -1.5rem;
+            font-size: 7rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.03);
+            line-height: 1;
+            pointer-events: none;
+            user-select: none;
+            transition: color 0.3s;
+        }
+        .month-card:hover .quarter-mark {
+            color: rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="min-h-screen py-12 px-4 sm:px-6 lg:px-8 relative">
+
+    <div class="max-w-7xl mx-auto pb-20">
+        <!-- 标题区 -->
+        <div class="text-center mb-16 space-y-4 animate-fade-in-up">
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-claude-dim to-claude-accent">2025</span> 年度路线图
+            </h1>
+            <p class="text-claude-dim max-w-2xl mx-auto text-lg">
+                生态系统进化全览，从模型突破到企业级功能落地
+            </p>
+        </div>
+
+        <!-- 卡片网格 -->
+        <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+
+            <!-- 1月 -->
+            <div class="month-card bg-[#1c1c1f]/50 border border-dashed border-claude-border/50 rounded-2xl p-6 flex flex-col h-full animate-fade-in-up opacity-80 relative overflow-hidden group">
+                <div class="quarter-mark">Q1</div>
+                <div class="flex items-baseline justify-between mb-4 z-10">
+                    <h3 class="text-lg font-bold text-white tracking-wider">一月</h3>
+                    <span class="text-[10px] font-mono text-claude-dim border border-claude-border px-1.5 py-0.5 rounded opacity-50">01</span>
+                </div>
+                <div class="flex-grow flex items-center justify-center text-xs text-claude-muted italic py-4">
+                    蓄势待发
+                </div>
+            </div>
+
+            <!-- 2月 -->
+            <div class="month-card bg-claude-card border border-claude-border rounded-2xl p-6 flex flex-col h-full animate-fade-in-up relative overflow-hidden group" style="animation-delay: 50ms;">
+                <div class="flex items-baseline justify-between mb-4 z-10">
+                    <h3 class="text-lg font-bold text-white tracking-wider">二月</h3>
+                    <span class="text-[10px] font-mono text-claude-dim border border-claude-border px-1.5 py-0.5 rounded opacity-50">02</span>
+                </div>
+                <ul class="space-y-2.5 z-10 flex-grow">
+                    <li class="feature-item text-xs text-gray-300 leading-snug"><span class="text-claude-accent font-medium">Claude Code 预览版</span></li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug">扩展思维模式上线</li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug">GitHub 深度集成</li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug"><span class="text-indigo-400 font-semibold">Sonnet 3.7 模型发布</span></li>
+                </ul>
+            </div>
+
+            <!-- 3月 -->
+            <div class="month-card bg-claude-card border border-claude-border rounded-2xl p-6 flex flex-col h-full animate-fade-in-up relative overflow-hidden group" style="animation-delay: 100ms;">
+                <div class="flex items-baseline justify-between mb-4 z-10">
+                    <h3 class="text-lg font-bold text-white tracking-wider">三月</h3>
+                    <span class="text-[10px] font-mono text-claude-dim border border-claude-border px-1.5 py-0.5 rounded opacity-50">03</span>
+                </div>
+                <ul class="space-y-2.5 z-10 flex-grow">
+                    <li class="feature-item text-xs text-gray-300 leading-snug"><span class="text-emerald-400">实时联网搜索</span></li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug">API 延迟优化</li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug">数据隐私面板更新</li>
+                </ul>
+            </div>
+
+            <!-- 4月 -->
+            <div class="month-card bg-claude-card border border-claude-border rounded-2xl p-6 flex flex-col h-full animate-fade-in-up relative overflow-hidden group" style="animation-delay: 150ms;">
+                <div class="quarter-mark">Q2</div>
+                <div class="flex items-baseline justify-between mb-4 z-10">
+                    <h3 class="text-lg font-bold text-white tracking-wider">四月</h3>
+                    <span class="text-[10px] font-mono text-claude-dim border border-claude-border px-1.5 py-0.5 rounded opacity-50">04</span>
+                </div>
+                <ul class="space-y-2.5 z-10 flex-grow">
+                    <li class="feature-item text-xs text-gray-300 leading-snug">Claude 教育版发布</li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug">Google Workspace 集成</li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug">Max 订阅计划</li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug">深度研究模式 Beta</li>
+                </ul>
+            </div>
+
+            <!-- 5月 -->
+            <div class="month-card bg-claude-card border border-claude-border rounded-2xl p-6 flex flex-col h-full animate-fade-in-up relative overflow-hidden group" style="animation-delay: 200ms;">
+                <div class="flex items-baseline justify-between mb-4 z-10">
+                    <h3 class="text-lg font-bold text-white tracking-wider">五月</h3>
+                    <span class="text-[10px] font-mono text-claude-dim border border-claude-border px-1.5 py-0.5 rounded opacity-50">05</span>
+                </div>
+                <ul class="space-y-2.5 z-10 flex-grow">
+                    <li class="feature-item text-xs text-gray-300 leading-snug">高级研究模式正式版</li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug">工具调用能力增强</li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug"><span class="text-indigo-400 font-semibold">Opus 4 模型发布</span></li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug"><span class="text-indigo-400 font-semibold">Sonnet 4 模型跟进</span></li>
+                </ul>
+            </div>
+
+            <!-- 6月 -->
+            <div class="month-card bg-claude-card border border-claude-border rounded-2xl p-6 flex flex-col h-full animate-fade-in-up relative overflow-hidden group" style="animation-delay: 250ms;">
+                <div class="flex items-baseline justify-between mb-4 z-10">
+                    <h3 class="text-lg font-bold text-white tracking-wider">六月</h3>
+                    <span class="text-[10px] font-mono text-claude-dim border border-claude-border px-1.5 py-0.5 rounded opacity-50">06</span>
+                </div>
+                <ul class="space-y-2.5 z-10 flex-grow">
+                    <li class="feature-item text-xs text-gray-300 leading-snug">Artifacts 智能预览 2.0</li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug">社区作品画廊上线</li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug">桌面端扩展插件支持</li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug">政务版解决方案</li>
+                </ul>
+            </div>
+
+            <!-- 7月 -->
+            <div class="month-card bg-claude-card border border-claude-border rounded-2xl p-6 flex flex-col h-full animate-fade-in-up relative overflow-hidden group" style="animation-delay: 300ms;">
+                <div class="quarter-mark">Q3</div>
+                <div class="flex items-baseline justify-between mb-4 z-10">
+                    <h3 class="text-lg font-bold text-white tracking-wider">七月</h3>
+                    <span class="text-[10px] font-mono text-claude-dim border border-claude-border px-1.5 py-0.5 rounded opacity-50">07</span>
+                </div>
+                <ul class="space-y-2.5 z-10 flex-grow">
+                    <li class="feature-item text-xs text-gray-300 leading-snug">连接器市场开放</li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug">免费增值模式调整</li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug">团队协作功能优化</li>
+                </ul>
+            </div>
+
+            <!-- 8月 -->
+            <div class="month-card bg-claude-card border border-claude-border rounded-2xl p-6 flex flex-col h-full animate-fade-in-up relative overflow-hidden group" style="animation-delay: 350ms;">
+                <div class="flex items-baseline justify-between mb-4 z-10">
+                    <h3 class="text-lg font-bold text-white tracking-wider">八月</h3>
+                    <span class="text-[10px] font-mono text-claude-dim border border-claude-border px-1.5 py-0.5 rounded opacity-50">08</span>
+                </div>
+                <ul class="space-y-2.5 z-10 flex-grow">
+                    <li class="feature-item text-xs text-gray-300 leading-snug">主动结束对话能力</li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug">Chrome 官方插件发布</li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug">额度加油包上线</li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug"><span class="text-indigo-400 font-semibold">Opus 4.1 迭代</span></li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug">项目级共享协作</li>
+                </ul>
+            </div>
+
+            <!-- 9月 -->
+            <div class="month-card bg-claude-card border border-claude-border rounded-2xl p-6 flex flex-col h-full animate-fade-in-up relative overflow-hidden group" style="animation-delay: 400ms;">
+                <div class="flex items-baseline justify-between mb-4 z-10">
+                    <h3 class="text-lg font-bold text-white tracking-wider">九月</h3>
+                    <span class="text-[10px] font-mono text-claude-dim border border-claude-border px-1.5 py-0.5 rounded opacity-50">09</span>
+                </div>
+                <ul class="space-y-2.5 z-10 flex-grow">
+                    <li class="feature-item text-xs text-gray-300 leading-snug">多文件创建与编辑</li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug">Imagine 图像生成工具</li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug">无痕对话模式</li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug">长期记忆功能 Memory</li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug"><span class="text-indigo-400 font-semibold">Sonnet 4.5 模型</span></li>
+                </ul>
+            </div>
+
+            <!-- 10月 -->
+            <div class="month-card bg-claude-card border border-claude-border rounded-2xl p-6 flex flex-col h-full animate-fade-in-up relative overflow-hidden group" style="animation-delay: 450ms;">
+                <div class="quarter-mark">Q4</div>
+                <div class="flex items-baseline justify-between mb-4 z-10">
+                    <h3 class="text-lg font-bold text-white tracking-wider">十月</h3>
+                    <span class="text-[10px] font-mono text-claude-dim border border-claude-border px-1.5 py-0.5 rounded opacity-50">10</span>
+                </div>
+                <ul class="space-y-2.5 z-10 flex-grow">
+                    <li class="feature-item text-xs text-gray-300 leading-snug"><span class="text-claude-accent font-medium">Claude Code 网页版</span></li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug">Excel 数据分析集成</li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug">企业知识库搜索</li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug"><span class="text-indigo-400 font-semibold">Haiku 4.5 轻量模型</span></li>
+                </ul>
+            </div>
+
+            <!-- 11月 -->
+            <div class="month-card bg-claude-card border border-claude-border rounded-2xl p-6 flex flex-col h-full animate-fade-in-up relative overflow-hidden group" style="animation-delay: 500ms;">
+                <div class="flex items-baseline justify-between mb-4 z-10">
+                    <h3 class="text-lg font-bold text-white tracking-wider">十一月</h3>
+                    <span class="text-[10px] font-mono text-claude-dim border border-claude-border px-1.5 py-0.5 rounded opacity-50">11</span>
+                </div>
+                <ul class="space-y-2.5 z-10 flex-grow">
+                    <li class="feature-item text-xs text-gray-300 leading-snug"><span class="text-claude-accent font-medium">Claude Code 桌面全功能版</span></li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug">上下文压缩技术落地</li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug"><span class="text-indigo-400 font-semibold">Opus 4.5 旗舰模型</span></li>
+                </ul>
+            </div>
+
+            <!-- 12月 -->
+            <div class="month-card bg-claude-card border border-claude-border rounded-2xl p-6 flex flex-col h-full animate-fade-in-up relative overflow-hidden group" style="animation-delay: 550ms;">
+                <div class="flex items-baseline justify-between mb-4 z-10">
+                    <h3 class="text-lg font-bold text-white tracking-wider">十二月</h3>
+                    <span class="text-[10px] font-mono text-claude-dim border border-claude-border px-1.5 py-0.5 rounded opacity-50">12</span>
+                </div>
+                <ul class="space-y-2.5 z-10 flex-grow">
+                    <li class="feature-item text-xs text-gray-300 leading-snug"><span class="text-claude-accent font-medium">Claude Code 体验券</span></li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug">Slack 中的编程助手</li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug">礼品卡与好友赠送</li>
+                    <li class="feature-item text-xs text-gray-300 leading-snug">组织级技能库 Skills</li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 悬浮下载按钮 -->
+    <button id="download-btn" onclick="downloadAllCards()" class="fixed bottom-8 right-8 z-50 bg-claude-accent hover:bg-claude-accentHover text-black hover:text-white p-4 rounded-full shadow-2xl transition-all duration-300 flex items-center gap-2 group hover:scale-105 border border-white/10">
+        <span class="material-icons" id="btn-icon">download</span>
+        <span class="font-bold pr-2" id="btn-text">下载所有卡片</span>
+    </button>
+
+    <script>
+        async function downloadAllCards() {
+            const btn = document.getElementById('download-btn');
+            const icon = document.getElementById('btn-icon');
+            const text = document.getElementById('btn-text');
+
+            // 状态更新：加载中
+            const originalIconText = icon.innerText;
+            const originalTextText = text.innerText;
+
+            icon.innerText = 'sync';
+            icon.classList.add('animate-spin-slow');
+            text.innerText = '正在生成...';
+            btn.classList.add('opacity-75', 'cursor-not-allowed');
+            btn.disabled = true;
+
+            try {
+                const zip = new JSZip();
+                const cards = document.querySelectorAll('.month-card');
+
+                // 并行生成图片
+                const promises = Array.from(cards).map(async (card, index) => {
+                    const monthName = card.querySelector('h3').innerText.trim();
+                    const monthNum = (index + 1).toString().padStart(2, '0');
+
+                    // 使用 html2canvas 截图
+                    const canvas = await html2canvas(card, {
+                        scale: 3, // 提高导出清晰度
+                        backgroundColor: '#000000', // 修正：使用纯黑背景，避免半透明叠加后发灰
+                        useCORS: true,
+                        logging: false,
+                        onclone: (clonedDoc) => {
+                            // 在截图的一瞬间，对克隆的节点进行样式修正
+                            const clonedCard = clonedDoc.querySelector(`[data-html2canvas-ignore="true"]`) || clonedDoc.body.querySelector('.month-card');
+
+                            // 这里我们通过 class 查找克隆出来的卡片
+                            // 注意：html2canvas clone 的是整个 body 或目标节点，我们需要找到对应的那个
+                            // 由于我们是直接传入 card 节点，clonedDoc 的 body 下直接就是这个 card
+
+                            if (clonedDoc.body.firstChild) {
+                                const target = clonedDoc.body.firstChild;
+                                // 1. 移除 transform，防止悬停偏移被截图
+                                target.style.transform = 'none';
+                                target.style.boxShadow = 'none';
+
+                                // 2. 关键修正：移除透明度，确保文字和边框清晰锐利
+                                target.style.opacity = '1';
+                                target.classList.remove('opacity-80', 'opacity-60');
+
+                                // 3. 针对 1 月份这种半透明背景卡片，稍微加深背景色，保证在纯黑底上依然有层次
+                                // 检测原本是否有 bg-opacity
+                                if (target.className.includes('bg-[#1c1c1f]/50')) {
+                                    target.classList.remove('bg-[#1c1c1f]/50');
+                                    target.style.backgroundColor = '#1c1c1f'; // 改为实色，防止透出底色太亮
+                                }
+                            }
+                        }
+                    });
+
+                    // 转换 Blob
+                    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+                    zip.file(`2025_${monthNum}_${monthName}.png`, blob);
+                });
+
+                await Promise.all(promises);
+
+                // 生成 ZIP 并下载
+                const content = await zip.generateAsync({type:"blob"});
+                saveAs(content, "Claude_2025_Roadmap_Cards.zip");
+
+            } catch (err) {
+                console.error("下载失败:", err);
+                alert("生成图片时出错，请重试。");
+            } finally {
+                // 恢复按钮状态
+                icon.innerText = originalIconText;
+                icon.classList.remove('animate-spin-slow');
+                text.innerText = originalTextText;
+                btn.classList.remove('opacity-75', 'cursor-not-allowed');
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
