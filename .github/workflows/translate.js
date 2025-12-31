@@ -13,8 +13,11 @@ const client = new Anthropic({
 async function translate() {
   console.log('开始翻译 CHANGELOG...');
 
+  // 使用智谱 AI 支持的模型名称
+  const model = process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-20241022';
+
   const response = await client.messages.create({
-    model: 'claude-3-5-sonnet-20241022',
+    model: model,
     max_tokens: 15000,
     messages: [{
       role: 'user',
