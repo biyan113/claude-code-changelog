@@ -14,26 +14,39 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Claude Code CLI
-        run: npm install -g @anthropic-ai/claude-code
-
       - name: Fetch upstream CHANGELOG
         run: |
           curl -sL https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md -o CHANGELOG.md
 
-      - name: Translate with Claude Code (headless mode)
+      - name: Check if content changed
+        id: check_changes
+        run: |
+          if git diff --quiet HEAD CHANGELOG.md 2>/dev/null; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No changes detected"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Changes detected"
+          fi
+
+      - name: Install Claude Code CLI
+        if: steps.check_changes.outputs.changed == 'true'
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Sync and translate new versions
+        if: steps.check_changes.outputs.changed == 'true'
         env:
           ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
           ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
         run: |
-          claude -p "将 CHANGELOG.md 文件内容翻译成中文，保持 Markdown 格式，保存为 CHANGELOG_CN.md" \
-            --dangerously-skip-permissions \
-            --allowed-tools "Read,Write"
+          node scripts/sync.js
+          node scripts/merge.js
 
       - name: Commit and push
+        if: steps.check_changes.outputs.changed == 'true'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add CHANGELOG.md CHANGELOG_CN.md
+          git add CHANGELOG.md CHANGELOG_CN.md versions/ .versions.json
           git diff --staged --quiet || git commit -m "chore: sync changelog [skip ci]"
           git push
